@@ -1,0 +1,12 @@
+node_modules
+.git
+.env
+.env.*
+.idea
+.windsurf
+.agents
+.claude
+src/generated
+Dockerfile
+.dockerignore
+*.md
