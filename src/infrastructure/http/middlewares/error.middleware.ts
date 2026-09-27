@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
+import { DomainError } from "../../../domain/errors/domain.error";
 
 export const errorHandler: ErrorRequestHandler = (
   error: Error,
@@ -20,21 +21,12 @@ export const errorHandler: ErrorRequestHandler = (
     return;
   }
 
-  // 2. Gestion des erreurs métier du Domaine / Use Cases
-  // (Vous pouvez créer des classes d'erreurs personnalisées comme UserNotFoundError)
-  if (
-    error.message.includes("introuvable") ||
-    error.message.includes("non trouvé")
-  ) {
-    res.status(404).json({ status: "error", message: error.message });
-    return;
-  }
-
-  if (
-    error.message.includes("existe déjà") ||
-    error.message.includes("invalide")
-  ) {
-    res.status(400).json({ status: "error", message: error.message });
+  // 2. Erreurs métier du Domaine : elles portent elles-mêmes leur statut HTTP
+  if (error instanceof DomainError) {
+    res.status(error.statusCode).json({
+      status: "error",
+      message: error.message,
+    });
     return;
   }
 

@@ -1,7 +1,7 @@
 import { ArticleRepositoryPort } from "../../domain/ports/article-repository.port";
-import { PrismaClient } from "@prisma/client/extension";
 import { Article } from "../../domain/entities/article.entity";
 import { UserRepositoryPort } from "../../domain/ports/user-repository.port";
+import { NotFoundError } from "../../domain/errors/domain.error";
 
 export class FindArticlesByUserByIdUsecase {
   constructor(
@@ -12,7 +12,7 @@ export class FindArticlesByUserByIdUsecase {
   async execute(input: { authorId: string }): Promise<Article[]> {
     const author = await this.userRepository.findById(input.authorId);
     if (!author) {
-      throw new Error("Auteur introuvable");
+      throw new NotFoundError("Auteur introuvable");
     }
     return await this.articleRepository.findByAuthorId(author.id);
   }

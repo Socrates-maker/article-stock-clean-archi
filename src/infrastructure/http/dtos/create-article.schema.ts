@@ -10,7 +10,8 @@ export const CreateArticleSchema = z.object({
     .string()
     .length(3, "La devise doit faire exactement 3 lettres (ex: EUR)")
     .default("EUR"),
-  authorId: z.string().uuid("L'authorId doit être un UUID valide"),
+  // Pas d'authorId ici : l'auteur est déduit du jeton d'authentification,
+  // jamais du body (sinon n'importe qui publierait au nom d'un autre).
 });
 
 // Type TypeScript inféré automatiquement depuis le schéma Zod
