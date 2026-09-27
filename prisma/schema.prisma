@@ -16,6 +16,7 @@ model UserModel {
   id        String         @id
   email     String         @unique
   name      String
+  password  String
   articles  ArticleModel[]
   createdAt DateTime       @default(now())
 

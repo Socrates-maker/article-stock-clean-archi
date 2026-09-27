@@ -4,7 +4,7 @@ import { UserModel } from "../../../generated/prisma/client";
 export class UserMapper {
   // Conversion de la BDD vers le Domaine (Réhydratation)
   static toDomain(raw: UserModel): User {
-    return new User(raw.id, raw.email, raw.name);
+    return new User(raw.id, raw.email, raw.name, raw.password, raw.createdAt);
   }
 
   // Conversion du Domaine vers la BDD (Persistance)
@@ -13,7 +13,8 @@ export class UserMapper {
       id: user.id,
       email: user.email,
       name: user.name,
-      createdAt: new Date(),
+      password: user.passwordHash,
+      createdAt: user.createdAt,
     };
   }
 }

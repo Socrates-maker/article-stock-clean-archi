@@ -2,6 +2,7 @@ import { ArticleRepositoryPort } from "../../domain/ports/article-repository.por
 import { Article } from "../../domain/entities/article.entity";
 import { Money } from "../../domain/value-objects/money.value-object";
 import { UserRepositoryPort } from "../../domain/ports/user-repository.port";
+import { NotFoundError } from "../../domain/errors/domain.error";
 
 export interface CreateArticleDTO {
   title: string;
@@ -20,7 +21,7 @@ export class SaveArticleUseCase {
   async execute(input: CreateArticleDTO): Promise<Article> {
     const author = await this.userRepository.findById(input.authorId);
     if (!author) {
-      throw new Error("Auteur introuvable");
+      throw new NotFoundError("Auteur introuvable");
     }
     const price = new Money(input.priceAmount, input.currency);
     const article = new Article(
