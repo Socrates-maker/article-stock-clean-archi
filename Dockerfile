@@ -33,4 +33,4 @@ USER nodejs
 
 EXPOSE 3000
 
-CMD ["bun", "src/main.ts"]
+CMD ["sh", "-c", "bunx prisma migrate deploy && bun src/main.ts"]
